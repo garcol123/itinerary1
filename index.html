@@ -115,7 +115,7 @@
 
     .stats {
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 0;
       margin: 0 0 28px;
       border-top: 1px solid var(--line);
@@ -374,31 +374,6 @@
       border-top: 1px solid var(--line-soft);
     }
 
-    @media (max-width: 800px) {
-      .hero { padding-top: 48px; }
-      .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .day-card__topline { flex-direction: column; }
-      .sleep-badge {
-        width: 100%;
-        text-align: left;
-        flex-basis: auto;
-        padding-left: 0;
-        padding-top: 14px;
-        border-left: 0;
-        border-top: 1px solid var(--line-soft);
-      }
-      .timeline-item { grid-template-columns: 1fr; gap: 6px; }
-      .timeline-item time { font-size: 0.92rem; }
-    }
-
-    @media (max-width: 520px) {
-      .page { width: min(100% - 22px, 1180px); }
-      .stats { grid-template-columns: 1fr; }
-      .day-card__topline, .timeline { padding-left: 16px; padding-right: 16px; }
-      .descriptor { display: block; margin-left: 0; margin-top: 2px; }
-      h1 { font-size: clamp(2.6rem, 16vw, 4.5rem); }
-    }
-
     @media print {
       body { background: white; }
       .hero-actions, .day-nav { display: none; }
@@ -419,7 +394,6 @@
       <div class="stat"><strong>15</strong><span>calendar days</span></div>
       <div class="stat"><strong>6</strong><span>overnight bases</span></div>
       <div class="stat"><strong>Tokyo → Osaka</strong><span>overall direction</span></div>
-      <div class="stat"><strong>City + mountain</strong><span>temples, food, ryokan, art</span></div>
     </section>
 
     <section class="route-card" aria-label="Route overview">
