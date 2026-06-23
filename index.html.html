@@ -1,0 +1,951 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Japan Itinerary — Black & White Minimal</title>
+  <style>
+    :root {
+      --ink: #050505;
+      --muted: #555555;
+      --paper: #ffffff;
+      --card: #ffffff;
+      --line: #111111;
+      --line-soft: #d9d9d9;
+      --accent: #000000;
+      --accent-2: #000000;
+      --gold: #000000;
+      --shadow: none;
+      --radius: 0;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.55;
+      background: var(--paper);
+      text-rendering: geometricPrecision;
+    }
+
+    a { color: inherit; }
+
+    a:focus-visible,
+    .button:focus-visible {
+      outline: 2px solid var(--ink);
+      outline-offset: 3px;
+    }
+
+    .page {
+      width: min(1120px, calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    .hero {
+      padding: 84px 0 42px;
+      position: relative;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 28px;
+    }
+
+    .hero::after { display: none; }
+
+    .kicker {
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      padding: 7px 10px;
+      border: 1px solid var(--line);
+      border-radius: 0;
+      color: var(--ink);
+      background: transparent;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-size: 0.72rem;
+    }
+
+    h1 {
+      margin: 22px 0 0;
+      max-width: 920px;
+      font-family: inherit;
+      font-size: clamp(3rem, 8vw, 7rem);
+      line-height: 0.92;
+      letter-spacing: -0.075em;
+      font-weight: 760;
+    }
+
+    .subtitle {
+      max-width: 760px;
+      margin: 18px 0 0;
+      color: var(--muted);
+      font-size: clamp(1rem, 2vw, 1.18rem);
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 28px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 11px 15px;
+      border-radius: 0;
+      border: 1px solid var(--line);
+      background: var(--paper);
+      text-decoration: none;
+      font-weight: 700;
+      box-shadow: none;
+    }
+
+    .button.primary {
+      background: var(--ink);
+      color: var(--paper);
+      border-color: var(--ink);
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0;
+      margin: 0 0 28px;
+      border-top: 1px solid var(--line);
+      border-left: 1px solid var(--line);
+    }
+
+    .stat {
+      padding: 18px;
+      background: var(--card);
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      border-radius: 0;
+      box-shadow: none;
+      backdrop-filter: none;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 1.35rem;
+      letter-spacing: -0.03em;
+      font-weight: 760;
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: 0.82rem;
+      letter-spacing: 0.02em;
+    }
+
+    .route-card {
+      margin: 0 0 30px;
+      padding: 20px;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 0;
+      box-shadow: none;
+    }
+
+    .route-card h2 {
+      margin: 0 0 14px;
+      font-size: 0.74rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      font-family: inherit;
+      font-weight: 760;
+    }
+
+    .route {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 10px;
+      align-items: center;
+      font-weight: 700;
+    }
+
+    .route .descriptor { display: none; }
+
+    .route-arrow {
+      color: var(--ink);
+      opacity: 0.45;
+    }
+
+    .day-nav {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 12px 0;
+      margin: 0 0 22px;
+      background: rgba(255, 255, 255, 0.96);
+      border-bottom: 1px solid var(--line-soft);
+      backdrop-filter: blur(10px);
+      scrollbar-width: thin;
+    }
+
+    .day-nav a {
+      flex: 0 0 auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 11px;
+      border-radius: 0;
+      border: 1px solid var(--line-soft);
+      background: var(--paper);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.82rem;
+      color: var(--ink);
+      transition: border-color 160ms ease, background 160ms ease;
+    }
+
+    .day-nav a:hover {
+      border-color: var(--line);
+      background: #f7f7f7;
+    }
+
+    .day-nav span {
+      display: inline-grid;
+      place-items: center;
+      width: 22px;
+      height: 22px;
+      border-radius: 0;
+      background: var(--ink);
+      color: var(--paper);
+      font-size: 0.72rem;
+      font-weight: 760;
+    }
+
+    .notice {
+      margin: 0 0 22px;
+      padding: 14px 16px;
+      background: #f7f7f7;
+      border: 1px solid var(--line-soft);
+      border-radius: 0;
+      color: var(--ink);
+    }
+
+    .itinerary {
+      display: grid;
+      gap: 18px;
+      padding-bottom: 56px;
+    }
+
+    .day-card {
+      overflow: hidden;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 0;
+      box-shadow: none;
+    }
+
+    .day-card__topline {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 22px 24px;
+      background: var(--card);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .eyebrow {
+      margin: 0 0 5px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      font-weight: 760;
+      font-size: 0.72rem;
+    }
+
+    .day-card h2 {
+      margin: 0;
+      font-family: inherit;
+      font-size: clamp(1.5rem, 3vw, 2.05rem);
+      letter-spacing: -0.045em;
+      font-weight: 740;
+    }
+
+    .sleep-badge {
+      flex: 0 1 390px;
+      padding: 0 0 0 18px;
+      border-radius: 0;
+      background: transparent;
+      border: 0;
+      border-left: 1px solid var(--line-soft);
+      text-align: right;
+      color: var(--ink);
+      font-weight: 700;
+    }
+
+    .sleep-badge > span:first-child {
+      display: block;
+      margin-bottom: 3px;
+      color: var(--muted);
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      font-weight: 760;
+    }
+
+    .sleep-badge .descriptor {
+      display: block;
+      margin-left: 0;
+      font-weight: 450;
+      font-size: 0.82rem;
+    }
+
+    .timeline {
+      list-style: none;
+      margin: 0;
+      padding: 6px 24px 18px;
+    }
+
+    .timeline-item {
+      display: grid;
+      grid-template-columns: 132px 1fr;
+      gap: 20px;
+      position: relative;
+      padding: 18px 0;
+      border-bottom: 1px solid var(--line-soft);
+    }
+
+    .timeline-item:last-child { border-bottom: none; }
+
+    .timeline-item time {
+      color: var(--ink);
+      font-weight: 760;
+      letter-spacing: -0.02em;
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .activity-text { min-width: 0; }
+
+    .place-link {
+      color: var(--ink);
+      font-weight: 760;
+      text-decoration: none;
+      border-bottom: 1px solid var(--ink);
+      transition: background 160ms ease, border-color 160ms ease;
+    }
+
+    .place-link:hover {
+      color: var(--ink);
+      border-color: transparent;
+      background: #eeeeee;
+    }
+
+    .descriptor {
+      margin-left: 0.28em;
+      color: var(--muted);
+      font-size: 0.93em;
+      font-weight: 430;
+    }
+
+    .official-link {
+      color: var(--ink);
+      font-weight: 700;
+      text-decoration: none;
+      border-bottom: 1px solid var(--ink);
+    }
+
+    .official-link:hover {
+      background: #eeeeee;
+      border-color: transparent;
+    }
+
+    .footer {
+      padding: 28px 0 48px;
+      color: var(--muted);
+      text-align: center;
+      font-size: 0.88rem;
+      border-top: 1px solid var(--line-soft);
+    }
+
+    @media (max-width: 800px) {
+      .hero { padding-top: 48px; }
+      .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .day-card__topline { flex-direction: column; }
+      .sleep-badge {
+        width: 100%;
+        text-align: left;
+        flex-basis: auto;
+        padding-left: 0;
+        padding-top: 14px;
+        border-left: 0;
+        border-top: 1px solid var(--line-soft);
+      }
+      .timeline-item { grid-template-columns: 1fr; gap: 6px; }
+      .timeline-item time { font-size: 0.92rem; }
+    }
+
+    @media (max-width: 520px) {
+      .page { width: min(100% - 22px, 1180px); }
+      .stats { grid-template-columns: 1fr; }
+      .day-card__topline, .timeline { padding-left: 16px; padding-right: 16px; }
+      .descriptor { display: block; margin-left: 0; margin-top: 2px; }
+      h1 { font-size: clamp(2.6rem, 16vw, 4.5rem); }
+    }
+
+    @media print {
+      body { background: white; }
+      .hero-actions, .day-nav { display: none; }
+      .hero { padding-top: 28px; }
+      .day-card { break-inside: avoid; box-shadow: none; }
+      .place-link, .official-link { border-bottom: none; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="hero" id="top">
+      <div class="kicker">Sat 24 Oct to Sat 7 Nov</div>
+      <h1>Japan Itinerary</h1>
+    </header>
+
+    <section class="stats" aria-label="Trip summary">
+      <div class="stat"><strong>15</strong><span>calendar days</span></div>
+      <div class="stat"><strong>6</strong><span>overnight bases</span></div>
+      <div class="stat"><strong>Tokyo → Osaka</strong><span>overall direction</span></div>
+      <div class="stat"><strong>City + mountain</strong><span>temples, food, ryokan, art</span></div>
+    </section>
+
+    <section class="route-card" aria-label="Route overview">
+      <h2>Route overview</h2>
+      <div class="route"><a class="place-link" href="https://www.google.com/search?q=Tokyo" target="_blank" rel="noopener noreferrer">Tokyo</a><span class="descriptor">(Japan’s huge capital: temples, food, fashion, and neon)</span> <span class="route-arrow">→</span> <a class="place-link" href="https://www.google.com/search?q=Kanazawa" target="_blank" rel="noopener noreferrer">Kanazawa</a><span class="descriptor">(garden, craft, seafood, and samurai-era city)</span> <span class="route-arrow">→</span> <a class="place-link" href="https://www.google.com/search?q=Shirakawa-go" target="_blank" rel="noopener noreferrer">Shirakawa-go</a><span class="descriptor">(UNESCO thatched-roof mountain village)</span> <span class="route-arrow">→</span> <a class="place-link" href="https://www.google.com/search?q=Okuhida" target="_blank" rel="noopener noreferrer">Okuhida</a><span class="descriptor">(mountain hot-spring region in the Japan Alps)</span> <span class="route-arrow">→</span> <a class="place-link" href="https://www.google.com/search?q=Takayama" target="_blank" rel="noopener noreferrer">Takayama</a><span class="descriptor">(preserved mountain merchant town in the Hida region)</span> <span class="route-arrow">→</span> <a class="place-link" href="https://www.google.com/search?q=Kyoto" target="_blank" rel="noopener noreferrer">Kyoto</a><span class="descriptor">(former imperial capital famous for temples and old lanes)</span> <span class="route-arrow">→</span> <a class="place-link" href="https://www.google.com/search?q=Nara" target="_blank" rel="noopener noreferrer">Nara</a><span class="descriptor">(ancient capital known for deer, shrines, and giant temples)</span> <span class="route-arrow">→</span> <a class="place-link" href="https://www.google.com/search?q=Himeji" target="_blank" rel="noopener noreferrer">Himeji</a><span class="descriptor">(castle city west of Kobe)</span> <span class="route-arrow">→</span> <a class="place-link" href="https://www.google.com/search?q=Hiroshima" target="_blank" rel="noopener noreferrer">Hiroshima</a><span class="descriptor">(peace memorial city with excellent food culture)</span> <span class="route-arrow">→</span> <a class="place-link" href="https://www.google.com/search?q=Miyajima" target="_blank" rel="noopener noreferrer">Miyajima</a><span class="descriptor">(scenic shrine island near Hiroshima)</span> <span class="route-arrow">→</span> <a class="place-link" href="https://www.google.com/search?q=Osaka" target="_blank" rel="noopener noreferrer">Osaka</a><span class="descriptor">(food-loving city known for nightlife and street energy)</span></div>
+    </section>
+
+    <nav class="day-nav" aria-label="Jump to day">
+      <a href="#day-1"><span>1</span>Sat 24 Oct</a><a href="#day-2"><span>2</span>Sun 25 Oct</a><a href="#day-3"><span>3</span>Mon 26 Oct</a><a href="#day-4"><span>4</span>Tue 27 Oct</a><a href="#day-5"><span>5</span>Wed 28 Oct</a><a href="#day-6"><span>6</span>Thu 29 Oct</a><a href="#day-7"><span>7</span>Fri 30 Oct</a><a href="#day-8"><span>8</span>Sat 31 Oct</a><a href="#day-9"><span>9</span>Sun 1 Nov</a><a href="#day-10"><span>10</span>Mon 2 Nov</a><a href="#day-11"><span>11</span>Tue 3 Nov</a><a href="#day-12"><span>12</span>Wed 4 Nov</a><a href="#day-13"><span>13</span>Thu 5 Nov</a><a href="#day-14"><span>14</span>Fri 6 Nov</a><a href="#day-15"><span>15</span>Sat 7 Nov</a>
+    </nav>
+
+    <section class="itinerary" id="itinerary">
+      
+      <article class="day-card" id="day-1">
+        <div class="day-card__topline">
+          <div>
+            <p class="eyebrow">Day 1</p>
+            <h2>Sat 24 Oct</h2>
+          </div>
+          <div class="sleep-badge"><span>Sleep base</span><a class="place-link" href="https://www.google.com/search?q=Tokyo" target="_blank" rel="noopener noreferrer">Tokyo</a><span class="descriptor">(Japan’s huge capital: temples, food, fashion, and neon)</span></div>
+        </div>
+        <ol class="timeline">
+          
+          <li class="timeline-item">
+            <time>Arrival–17:00</time>
+            <div class="activity-text">Arrive in <a class="place-link" href="https://www.google.com/search?q=Tokyo" target="_blank" rel="noopener noreferrer">Tokyo</a><span class="descriptor">(Japan’s huge capital: temples, food, fashion, and neon)</span>. Transfer to hotel. Stay in an easy base such as <a class="place-link" href="https://www.google.com/search?q=Tokyo+Station" target="_blank" rel="noopener noreferrer">Tokyo Station</a><span class="descriptor">(historic brick railway hub and bullet-train gateway)</span>/<a class="place-link" href="https://www.google.com/search?q=Ginza" target="_blank" rel="noopener noreferrer">Ginza</a><span class="descriptor">(upscale shopping, department stores, and design)</span>, <a class="place-link" href="https://www.google.com/search?q=Shinjuku" target="_blank" rel="noopener noreferrer">Shinjuku</a><span class="descriptor">(neon nightlife, dining, and major transport hub)</span>, <a class="place-link" href="https://www.google.com/search?q=Shibuya" target="_blank" rel="noopener noreferrer">Shibuya</a><span class="descriptor">(famous scramble crossing and youth shopping hub)</span>, or <a class="place-link" href="https://www.google.com/search?q=Ueno" target="_blank" rel="noopener noreferrer">Ueno</a><span class="descriptor">(park, museums, and old-Tokyo food streets)</span>.</div>
+          </li>
+          <li class="timeline-item">
+            <time>18:00–20:30</time>
+            <div class="activity-text">Easy dinner near the hotel. Keep this low-pressure after the flight.</div>
+          </li>
+        </ol>
+      </article>
+      <article class="day-card" id="day-2">
+        <div class="day-card__topline">
+          <div>
+            <p class="eyebrow">Day 2</p>
+            <h2>Sun 25 Oct</h2>
+          </div>
+          <div class="sleep-badge"><span>Sleep base</span><a class="place-link" href="https://www.google.com/search?q=Tokyo" target="_blank" rel="noopener noreferrer">Tokyo</a><span class="descriptor">(Japan’s huge capital: temples, food, fashion, and neon)</span></div>
+        </div>
+        <ol class="timeline">
+          
+          <li class="timeline-item">
+            <time>08:30–10:00</time>
+            <div class="activity-text"><a class="place-link" href="https://www.google.com/search?q=Meiji+Shrine" target="_blank" rel="noopener noreferrer">Meiji Shrine</a><span class="descriptor">(forested Shinto shrine beside Harajuku)</span> — peaceful forest shrine near <a class="place-link" href="https://www.google.com/search?q=Harajuku" target="_blank" rel="noopener noreferrer">Harajuku</a><span class="descriptor">(Tokyo youth-fashion and pop-culture district)</span>.</div>
+          </li>
+          <li class="timeline-item">
+            <time>10:00–12:30</time>
+            <div class="activity-text"><a class="place-link" href="https://www.google.com/search?q=Harajuku" target="_blank" rel="noopener noreferrer">Harajuku</a><span class="descriptor">(Tokyo youth-fashion and pop-culture district)</span> / <a class="place-link" href="https://www.google.com/search?q=Omotesando" target="_blank" rel="noopener noreferrer">Omotesando</a><span class="descriptor">(tree-lined avenue of architecture, boutiques, and cafés)</span> / <a class="place-link" href="https://www.google.com/search?q=Aoyama" target="_blank" rel="noopener noreferrer">Aoyama</a><span class="descriptor">(polished design, fashion, and café district)</span> — youth fashion, design shops, cafés, architecture.</div>
+          </li>
+          <li class="timeline-item">
+            <time>12:30–14:00</time>
+            <div class="activity-text">Lunch in the <a class="place-link" href="https://www.google.com/search?q=Omotesando" target="_blank" rel="noopener noreferrer">Omotesando</a><span class="descriptor">(tree-lined avenue of architecture, boutiques, and cafés)</span>/<a class="place-link" href="https://www.google.com/search?q=Aoyama" target="_blank" rel="noopener noreferrer">Aoyama</a><span class="descriptor">(polished design, fashion, and café district)</span> area.</div>
+          </li>
+          <li class="timeline-item">
+            <time>14:00–16:30</time>
+            <div class="activity-text"><a class="place-link" href="https://www.google.com/search?q=Shibuya" target="_blank" rel="noopener noreferrer">Shibuya</a><span class="descriptor">(famous scramble crossing and youth shopping hub)</span> — famous crossing, shopping, cafés, city energy.</div>
+          </li>
+          <li class="timeline-item">
+            <time>17:30–21:00</time>
+            <div class="activity-text"><a class="place-link" href="https://www.google.com/search?q=Shinjuku" target="_blank" rel="noopener noreferrer">Shinjuku</a><span class="descriptor">(neon nightlife, dining, and major transport hub)</span> — dinner around <a class="place-link" href="https://www.google.com/search?q=Omoide+Yokocho" target="_blank" rel="noopener noreferrer">Omoide Yokocho</a><span class="descriptor">(tiny postwar-style alley of yakitori counters)</span>, <a class="place-link" href="https://www.google.com/search?q=Golden+Gai" target="_blank" rel="noopener noreferrer">Golden Gai</a><span class="descriptor">(dense cluster of tiny, characterful bars)</span>, or an <a class="place-link" href="https://www.google.com/search?q=izakaya" target="_blank" rel="noopener noreferrer">izakaya</a><span class="descriptor">(casual Japanese pub)</span> area.</div>
+          </li>
+        </ol>
+      </article>
+      <article class="day-card" id="day-3">
+        <div class="day-card__topline">
+          <div>
+            <p class="eyebrow">Day 3</p>
+            <h2>Mon 26 Oct</h2>
+          </div>
+          <div class="sleep-badge"><span>Sleep base</span><a class="place-link" href="https://www.google.com/search?q=Tokyo" target="_blank" rel="noopener noreferrer">Tokyo</a><span class="descriptor">(Japan’s huge capital: temples, food, fashion, and neon)</span></div>
+        </div>
+        <ol class="timeline">
+          
+          <li class="timeline-item">
+            <time>08:30–11:00</time>
+            <div class="activity-text"><a class="place-link" href="https://www.google.com/search?q=Asakusa" target="_blank" rel="noopener noreferrer">Asakusa</a><span class="descriptor">(old Tokyo temple district)</span> + <a class="place-link" href="https://www.google.com/search?q=Senso-ji" target="_blank" rel="noopener noreferrer">Senso-ji</a><span class="descriptor">(Tokyo’s oldest Buddhist temple)</span> — <a class="place-link" href="https://www.google.com/search?q=Tokyo" target="_blank" rel="noopener noreferrer">Tokyo</a><span class="descriptor">(Japan’s huge capital: temples, food, fashion, and neon)</span>’s classic old temple district.</div>
+          </li>
+          <li class="timeline-item">
+            <time>11:00–12:30</time>
+            <div class="activity-text"><a class="place-link" href="https://www.google.com/search?q=Kappabashi" target="_blank" rel="noopener noreferrer">Kappabashi</a><span class="descriptor">(kitchenware street for knives, ceramics, and food displays)</span> — kitchenware and Japanese cooking-tool street.</div>
+          </li>
+          <li class="timeline-item">
+            <time>12:30–14:00</time>
+            <div class="activity-text">Lunch around <a class="place-link" href="https://www.google.com/search?q=Asakusa" target="_blank" rel="noopener noreferrer">Asakusa</a><span class="descriptor">(old Tokyo temple district)</span> or <a class="place-link" href="https://www.google.com/search?q=Ueno" target="_blank" rel="noopener noreferrer">Ueno</a><span class="descriptor">(park, museums, and old-Tokyo food streets)</span>.</div>
+          </li>
+          <li class="timeline-item">
+            <time>14:00–16:30</time>
+            <div class="activity-text"><a class="place-link" href="https://www.google.com/search?q=Ueno" target="_blank" rel="noopener noreferrer">Ueno</a><span class="descriptor">(park, museums, and old-Tokyo food streets)</span> / <a class="place-link" href="https://www.google.com/search?q=Nezu" target="_blank" rel="noopener noreferrer">Nezu</a><span class="descriptor">(quiet historic neighborhood near old shrines and lanes)</span> / <a class="place-link" href="https://www.google.com/search?q=Yanaka" target="_blank" rel="noopener noreferrer">Yanaka</a><span class="descriptor">(preserved old-Tokyo neighborhood with retro shops)</span> — parks, museums, old-neighborhood streets; or visit <a class="place-link" href="https://www.google.com/search?q=Tokyo+National+Museum" target="_blank" rel="noopener noreferrer">Tokyo National Museum</a><span class="descriptor">(Japan’s largest museum of art and antiquities)</span>.</div>
+          </li>
+          <li class="timeline-item">
+            <time>17:30–20:30</time>
+            <div class="activity-text">Choose based on mood: <a class="place-link" href="https://www.google.com/search?q=Akihabara" target="_blank" rel="noopener noreferrer">Akihabara</a><span class="descriptor">(electronics, gaming, and anime district)</span> for electronics/anime, <a class="place-link" href="https://www.google.com/search?q=Ginza" target="_blank" rel="noopener noreferrer">Ginza</a><span class="descriptor">(upscale shopping, department stores, and design)</span> for upscale shopping, or <a class="place-link" href="https://www.google.com/search?q=Tokyo+Station" target="_blank" rel="noopener noreferrer">Tokyo Station</a><span class="descriptor">(historic brick railway hub and bullet-train gateway)</span> dinner.</div>
+          </li>
+        </ol>
+      </article>
+      <article class="day-card" id="day-4">
+        <div class="day-card__topline">
+          <div>
+            <p class="eyebrow">Day 4</p>
+            <h2>Tue 27 Oct</h2>
+          </div>
+          <div class="sleep-badge"><span>Sleep base</span><a class="place-link" href="https://www.google.com/search?q=Tokyo" target="_blank" rel="noopener noreferrer">Tokyo</a><span class="descriptor">(Japan’s huge capital: temples, food, fashion, and neon)</span></div>
+        </div>
+        <ol class="timeline">
+          
+          <li class="timeline-item">
+            <time>09:30–12:30</time>
+            <div class="activity-text">Slower <a class="place-link" href="https://www.google.com/search?q=Tokyo" target="_blank" rel="noopener noreferrer">Tokyo</a><span class="descriptor">(Japan’s huge capital: temples, food, fashion, and neon)</span> morning: <a class="place-link" href="https://www.google.com/search?q=Daikanyama" target="_blank" rel="noopener noreferrer">Daikanyama</a><span class="descriptor">(stylish cafés, boutiques, and bookshops)</span> for stylish cafés/bookstores, <a class="place-link" href="https://www.google.com/search?q=Nakameguro" target="_blank" rel="noopener noreferrer">Nakameguro</a><span class="descriptor">(canal-side cafés, shops, and relaxed design scene)</span> for canal-side shops, <a class="place-link" href="https://www.google.com/search?q=Shimokitazawa" target="_blank" rel="noopener noreferrer">Shimokitazawa</a><span class="descriptor">(vintage shopping, indie music, and theatre area)</span> for vintage/indie, or <a class="place-link" href="https://www.google.com/search?q=Koenji" target="_blank" rel="noopener noreferrer">Koenji</a><span class="descriptor">(vintage shops and live-music neighborhood)</span> for music/vintage.</div>
+          </li>
+          <li class="timeline-item">
+            <time>12:30–14:00</time>
+            <div class="activity-text">Lunch.</div>
+          </li>
+          <li class="timeline-item">
+            <time>14:00–17:00</time>
+            <div class="activity-text">Flexible afternoon: <a class="place-link" href="https://www.google.com/search?q=teamLab" target="_blank" rel="noopener noreferrer">teamLab</a><span class="descriptor">(immersive digital-art museum experience)</span>, shopping, cafés, records, bookstores, or heritage/denim shops if desired.</div>
+          </li>
+          <li class="timeline-item">
+            <time>18:00–21:00</time>
+            <div class="activity-text">Nice dinner. Pack for the <a class="place-link" href="https://www.google.com/search?q=Kanazawa" target="_blank" rel="noopener noreferrer">Kanazawa</a><span class="descriptor">(garden, craft, seafood, and samurai-era city)</span>/<a class="place-link" href="https://www.google.com/search?q=Okuhida" target="_blank" rel="noopener noreferrer">Okuhida</a><span class="descriptor">(mountain hot-spring region in the Japan Alps)</span> leg.</div>
+          </li>
+        </ol>
+      </article>
+      <article class="day-card" id="day-5">
+        <div class="day-card__topline">
+          <div>
+            <p class="eyebrow">Day 5</p>
+            <h2>Wed 28 Oct</h2>
+          </div>
+          <div class="sleep-badge"><span>Sleep base</span><a class="place-link" href="https://www.google.com/search?q=Kanazawa" target="_blank" rel="noopener noreferrer">Kanazawa</a><span class="descriptor">(garden, craft, seafood, and samurai-era city)</span></div>
+        </div>
+        <ol class="timeline">
+          
+          <li class="timeline-item">
+            <time>08:30–11:15</time>
+            <div class="activity-text"><a class="place-link" href="https://www.google.com/search?q=Tokyo" target="_blank" rel="noopener noreferrer">Tokyo</a><span class="descriptor">(Japan’s huge capital: temples, food, fashion, and neon)</span> → <a class="place-link" href="https://www.google.com/search?q=Kanazawa" target="_blank" rel="noopener noreferrer">Kanazawa</a><span class="descriptor">(garden, craft, seafood, and samurai-era city)</span> by bullet train.</div>
+          </li>
+          <li class="timeline-item">
+            <time>11:30–12:30</time>
+            <div class="activity-text">Drop bags, then lunch near <a class="place-link" href="https://www.google.com/search?q=Kanazawa+Station" target="_blank" rel="noopener noreferrer">Kanazawa Station</a><span class="descriptor">(striking modern station gateway)</span> or <a class="place-link" href="https://www.google.com/search?q=Omicho+Market" target="_blank" rel="noopener noreferrer">Omicho Market</a><span class="descriptor">(Kanazawa seafood market)</span> — seafood market.</div>
+          </li>
+          <li class="timeline-item">
+            <time>13:00–15:00</time>
+            <div class="activity-text"><a class="place-link" href="https://www.google.com/search?q=Kenrokuen+Garden" target="_blank" rel="noopener noreferrer">Kenrokuen Garden</a><span class="descriptor">(one of Japan’s most celebrated landscape gardens)</span> — one of Japan’s most famous landscape gardens.</div>
+          </li>
+          <li class="timeline-item">
+            <time>15:00–17:00</time>
+            <div class="activity-text"><a class="place-link" href="https://www.google.com/search?q=Kanazawa+Castle+area" target="_blank" rel="noopener noreferrer">Kanazawa Castle area</a><span class="descriptor">(historic castle grounds beside Kenrokuen)</span> — historic castle grounds — plus <a class="place-link" href="https://www.google.com/search?q=Higashi+Chaya" target="_blank" rel="noopener noreferrer">Higashi Chaya</a><span class="descriptor">(preserved geisha teahouse district)</span> — preserved old teahouse district with wooden streets.</div>
+          </li>
+          <li class="timeline-item">
+            <time>18:30–20:30</time>
+            <div class="activity-text">Sushi or seafood dinner.</div>
+          </li>
+        </ol>
+      </article>
+      <article class="day-card" id="day-6">
+        <div class="day-card__topline">
+          <div>
+            <p class="eyebrow">Day 6</p>
+            <h2>Thu 29 Oct</h2>
+          </div>
+          <div class="sleep-badge"><span>Sleep base</span><a class="place-link" href="https://www.google.com/search?q=Kanazawa" target="_blank" rel="noopener noreferrer">Kanazawa</a><span class="descriptor">(garden, craft, seafood, and samurai-era city)</span></div>
+        </div>
+        <ol class="timeline">
+          
+          <li class="timeline-item">
+            <time>09:00–11:00</time>
+            <div class="activity-text"><a class="place-link" href="https://www.google.com/search?q=Nagamachi+Samurai+District" target="_blank" rel="noopener noreferrer">Nagamachi Samurai District</a><span class="descriptor">(old samurai-house neighborhood with canals)</span> — old samurai-house neighborhood with earthen walls and canals.</div>
+          </li>
+          <li class="timeline-item">
+            <time>11:00–12:30</time>
+            <div class="activity-text"><a class="place-link" href="https://www.google.com/search?q=Omicho+Market" target="_blank" rel="noopener noreferrer">Omicho Market</a><span class="descriptor">(Kanazawa seafood market)</span> — seafood market lunch.</div>
+          </li>
+          <li class="timeline-item">
+            <time>13:00–15:00</time>
+            <div class="activity-text"><a class="place-link" href="https://www.google.com/search?q=21st+Century+Museum" target="_blank" rel="noopener noreferrer">21st Century Museum</a><span class="descriptor">(contemporary art museum known for its architecture)</span> — modern art — or <a class="place-link" href="https://www.google.com/search?q=D.T.+Suzuki+Museum" target="_blank" rel="noopener noreferrer">D.T. Suzuki Museum</a><span class="descriptor">(quiet architecture and Zen philosophy museum)</span> — quiet architecture/philosophy museum.</div>
+          </li>
+          <li class="timeline-item">
+            <time>15:30–17:30</time>
+            <div class="activity-text"><a class="place-link" href="https://www.google.com/search?q=Higashi+Chaya" target="_blank" rel="noopener noreferrer">Higashi Chaya</a><span class="descriptor">(preserved geisha teahouse district)</span> / <a class="place-link" href="https://www.google.com/search?q=Kazuemachi" target="_blank" rel="noopener noreferrer">Kazuemachi</a><span class="descriptor">(riverside historic teahouse district)</span> — historic teahouse districts with atmospheric old streets, cafés, and craft shops.</div>
+          </li>
+          <li class="timeline-item">
+            <time>17:30–18:00</time>
+            <div class="activity-text">Forward main luggage to <a class="place-link" href="https://www.google.com/search?q=Kyoto" target="_blank" rel="noopener noreferrer">Kyoto</a><span class="descriptor">(former imperial capital famous for temples and old lanes)</span>. Carry only an overnight bag for <a class="place-link" href="https://www.google.com/search?q=Shirakawa-go" target="_blank" rel="noopener noreferrer">Shirakawa-go</a><span class="descriptor">(UNESCO thatched-roof mountain village)</span>, <a class="place-link" href="https://www.google.com/search?q=Takayama" target="_blank" rel="noopener noreferrer">Takayama</a><span class="descriptor">(preserved mountain merchant town in the Hida region)</span>, and the <a class="place-link" href="https://www.google.com/search?q=onsen" target="_blank" rel="noopener noreferrer">onsen</a><span class="descriptor">(natural hot-spring bath)</span> <a class="place-link" href="https://www.google.com/search?q=ryokan" target="_blank" rel="noopener noreferrer">ryokan</a><span class="descriptor">(traditional Japanese inn)</span>.</div>
+          </li>
+          <li class="timeline-item">
+            <time>18:30–20:30</time>
+            <div class="activity-text">Dinner, then early night before the mountain/<a class="place-link" href="https://www.google.com/search?q=onsen" target="_blank" rel="noopener noreferrer">onsen</a><span class="descriptor">(natural hot-spring bath)</span> travel day.</div>
+          </li>
+        </ol>
+      </article>
+      <article class="day-card" id="day-7">
+        <div class="day-card__topline">
+          <div>
+            <p class="eyebrow">Day 7</p>
+            <h2>Fri 30 Oct</h2>
+          </div>
+          <div class="sleep-badge"><span>Sleep base</span><a class="place-link" href="https://www.google.com/search?q=Hirayu" target="_blank" rel="noopener noreferrer">Hirayu</a><span class="descriptor">(Okuhida hot-spring village and mountain bus hub)</span> / <a class="place-link" href="https://www.google.com/search?q=Fukuji" target="_blank" rel="noopener noreferrer">Fukuji</a><span class="descriptor">(small Okuhida onsen village with traditional inns)</span> / <a class="place-link" href="https://www.google.com/search?q=Okuhida" target="_blank" rel="noopener noreferrer">Okuhida</a><span class="descriptor">(mountain hot-spring region in the Japan Alps)</span> <a class="place-link" href="https://www.google.com/search?q=onsen" target="_blank" rel="noopener noreferrer">onsen</a><span class="descriptor">(natural hot-spring bath)</span> <a class="place-link" href="https://www.google.com/search?q=ryokan" target="_blank" rel="noopener noreferrer">ryokan</a><span class="descriptor">(traditional Japanese inn)</span></div>
+        </div>
+        <ol class="timeline">
+          
+          <li class="timeline-item">
+            <time>08:00–09:30</time>
+            <div class="activity-text"><a class="place-link" href="https://www.google.com/search?q=Kanazawa" target="_blank" rel="noopener noreferrer">Kanazawa</a><span class="descriptor">(garden, craft, seafood, and samurai-era city)</span> → <a class="place-link" href="https://www.google.com/search?q=Shirakawa-go" target="_blank" rel="noopener noreferrer">Shirakawa-go</a><span class="descriptor">(UNESCO thatched-roof mountain village)</span> by bus.</div>
+          </li>
+          <li class="timeline-item">
+            <time>09:30–12:15</time>
+            <div class="activity-text"><a class="place-link" href="https://www.google.com/search?q=Shirakawa-go" target="_blank" rel="noopener noreferrer">Shirakawa-go</a><span class="descriptor">(UNESCO thatched-roof mountain village)</span> — mountain village with traditional steep thatched-roof farmhouses. Do the viewpoint, main village, and one farmhouse interior.</div>
+          </li>
+          <li class="timeline-item">
+            <time>12:30–13:30</time>
+            <div class="activity-text"><a class="place-link" href="https://www.google.com/search?q=Shirakawa-go" target="_blank" rel="noopener noreferrer">Shirakawa-go</a><span class="descriptor">(UNESCO thatched-roof mountain village)</span> → <a class="place-link" href="https://www.google.com/search?q=Takayama" target="_blank" rel="noopener noreferrer">Takayama</a><span class="descriptor">(preserved mountain merchant town in the Hida region)</span> by bus.</div>
+          </li>
+          <li class="timeline-item">
+            <time>13:30–15:15</time>
+            <div class="activity-text"><a class="place-link" href="https://www.google.com/search?q=Takayama" target="_blank" rel="noopener noreferrer">Takayama</a><span class="descriptor">(preserved mountain merchant town in the Hida region)</span> light visit — lunch, <a class="place-link" href="https://www.google.com/search?q=Sanmachi+Old+Town" target="_blank" rel="noopener noreferrer">Sanmachi Old Town</a><span class="descriptor">(Takayama’s preserved merchant-street district)</span> with preserved merchant streets, maybe one <a class="place-link" href="https://www.google.com/search?q=sake+brewery" target="_blank" rel="noopener noreferrer">sake brewery</a><span class="descriptor">(traditional rice-wine producer)</span>.</div>
+          </li>
+          <li class="timeline-item">
+            <time>15:30–16:45</time>
+            <div class="activity-text"><a class="place-link" href="https://www.google.com/search?q=Takayama" target="_blank" rel="noopener noreferrer">Takayama</a><span class="descriptor">(preserved mountain merchant town in the Hida region)</span> → <a class="place-link" href="https://www.google.com/search?q=Hirayu" target="_blank" rel="noopener noreferrer">Hirayu</a><span class="descriptor">(Okuhida hot-spring village and mountain bus hub)</span>/<a class="place-link" href="https://www.google.com/search?q=Fukuji" target="_blank" rel="noopener noreferrer">Fukuji</a><span class="descriptor">(small Okuhida onsen village with traditional inns)</span>/<a class="place-link" href="https://www.google.com/search?q=Okuhida" target="_blank" rel="noopener noreferrer">Okuhida</a><span class="descriptor">(mountain hot-spring region in the Japan Alps)</span> <a class="place-link" href="https://www.google.com/search?q=ryokan" target="_blank" rel="noopener noreferrer">ryokan</a><span class="descriptor">(traditional Japanese inn)</span>.</div>
+          </li>
+          <li class="timeline-item">
+            <time>16:45–17:30</time>
+            <div class="activity-text"><a class="place-link" href="https://www.google.com/search?q=Ryokan" target="_blank" rel="noopener noreferrer">Ryokan</a><span class="descriptor">(traditional Japanese inn)</span> check-in. Arrive on time because traditional inn dinners usually start early.</div>
+          </li>
+          <li class="timeline-item">
+            <time>17:30–21:30</time>
+            <div class="activity-text"><a class="place-link" href="https://www.google.com/search?q=Ryokan" target="_blank" rel="noopener noreferrer">Ryokan</a><span class="descriptor">(traditional Japanese inn)</span> + <a class="place-link" href="https://www.google.com/search?q=onsen" target="_blank" rel="noopener noreferrer">onsen</a><span class="descriptor">(natural hot-spring bath)</span> night — hot-spring bath, multi-course dinner, evening bath, slow mountain evening.</div>
+          </li>
+        </ol>
+      </article>
+      <article class="day-card" id="day-8">
+        <div class="day-card__topline">
+          <div>
+            <p class="eyebrow">Day 8</p>
+            <h2>Sat 31 Oct</h2>
+          </div>
+          <div class="sleep-badge"><span>Sleep base</span><a class="place-link" href="https://www.google.com/search?q=Kyoto" target="_blank" rel="noopener noreferrer">Kyoto</a><span class="descriptor">(former imperial capital famous for temples and old lanes)</span></div>
+        </div>
+        <ol class="timeline">
+          
+          <li class="timeline-item">
+            <time>08:00–09:30</time>
+            <div class="activity-text"><a class="place-link" href="https://www.google.com/search?q=Ryokan" target="_blank" rel="noopener noreferrer">Ryokan</a><span class="descriptor">(traditional Japanese inn)</span> breakfast + final morning <a class="place-link" href="https://www.google.com/search?q=onsen" target="_blank" rel="noopener noreferrer">onsen</a><span class="descriptor">(natural hot-spring bath)</span>.</div>
+          </li>
+          <li class="timeline-item">
+            <time>10:00–11:15</time>
+            <div class="activity-text"><a class="place-link" href="https://www.google.com/search?q=Okuhida" target="_blank" rel="noopener noreferrer">Okuhida</a><span class="descriptor">(mountain hot-spring region in the Japan Alps)</span>/<a class="place-link" href="https://www.google.com/search?q=Hirayu" target="_blank" rel="noopener noreferrer">Hirayu</a><span class="descriptor">(Okuhida hot-spring village and mountain bus hub)</span>/<a class="place-link" href="https://www.google.com/search?q=Fukuji" target="_blank" rel="noopener noreferrer">Fukuji</a><span class="descriptor">(small Okuhida onsen village with traditional inns)</span> → <a class="place-link" href="https://www.google.com/search?q=Takayama" target="_blank" rel="noopener noreferrer">Takayama</a><span class="descriptor">(preserved mountain merchant town in the Hida region)</span>.</div>
+          </li>
+          <li class="timeline-item">
+            <time>11:15–13:30</time>
+            <div class="activity-text">Fuller <a class="place-link" href="https://www.google.com/search?q=Takayama" target="_blank" rel="noopener noreferrer">Takayama</a><span class="descriptor">(preserved mountain merchant town in the Hida region)</span> visit: morning-market area, old town, <a class="place-link" href="https://www.google.com/search?q=Hida+beef" target="_blank" rel="noopener noreferrer">Hida beef</a><span class="descriptor">(premium regional wagyu beef)</span> lunch.</div>
+          </li>
+          <li class="timeline-item">
+            <time>14:00–18:00</time>
+            <div class="activity-text"><a class="place-link" href="https://www.google.com/search?q=Takayama" target="_blank" rel="noopener noreferrer">Takayama</a><span class="descriptor">(preserved mountain merchant town in the Hida region)</span> → <a class="place-link" href="https://www.google.com/search?q=Nagoya" target="_blank" rel="noopener noreferrer">Nagoya</a><span class="descriptor">(central Japan rail hub and major city)</span> → <a class="place-link" href="https://www.google.com/search?q=Kyoto" target="_blank" rel="noopener noreferrer">Kyoto</a><span class="descriptor">(former imperial capital famous for temples and old lanes)</span>.</div>
+          </li>
+          <li class="timeline-item">
+            <time>18:30–21:00</time>
+            <div class="activity-text"><a class="place-link" href="https://www.google.com/search?q=Kyoto" target="_blank" rel="noopener noreferrer">Kyoto</a><span class="descriptor">(former imperial capital famous for temples and old lanes)</span> check-in, then easy <a class="place-link" href="https://www.google.com/search?q=Gion" target="_blank" rel="noopener noreferrer">Gion</a><span class="descriptor">(Kyoto’s geisha district and atmospheric old lanes)</span> / <a class="place-link" href="https://www.google.com/search?q=Pontocho" target="_blank" rel="noopener noreferrer">Pontocho</a><span class="descriptor">(narrow riverside dining alley)</span> dinner area — old lanes, riverside restaurants, atmospheric evening streets.</div>
+          </li>
+        </ol>
+      </article>
+      <article class="day-card" id="day-9">
+        <div class="day-card__topline">
+          <div>
+            <p class="eyebrow">Day 9</p>
+            <h2>Sun 1 Nov</h2>
+          </div>
+          <div class="sleep-badge"><span>Sleep base</span><a class="place-link" href="https://www.google.com/search?q=Kyoto" target="_blank" rel="noopener noreferrer">Kyoto</a><span class="descriptor">(former imperial capital famous for temples and old lanes)</span></div>
+        </div>
+        <ol class="timeline">
+          
+          <li class="timeline-item">
+            <time>07:30–09:00</time>
+            <div class="activity-text"><a class="place-link" href="https://www.google.com/search?q=Kiyomizu-dera" target="_blank" rel="noopener noreferrer">Kiyomizu-dera</a><span class="descriptor">(hilltop temple famous for its wooden stage and views)</span> — iconic hillside temple with <a class="place-link" href="https://www.google.com/search?q=Kyoto" target="_blank" rel="noopener noreferrer">Kyoto</a><span class="descriptor">(former imperial capital famous for temples and old lanes)</span> views.</div>
+          </li>
+          <li class="timeline-item">
+            <time>09:00–11:30</time>
+            <div class="activity-text"><a class="place-link" href="https://www.google.com/search?q=Sannenzaka" target="_blank" rel="noopener noreferrer">Sannenzaka</a><span class="descriptor">(historic stone shopping lane near Kiyomizu-dera)</span> / <a class="place-link" href="https://www.google.com/search?q=Ninenzaka" target="_blank" rel="noopener noreferrer">Ninenzaka</a><span class="descriptor">(picturesque old lane of shops and teahouses)</span> / <a class="place-link" href="https://www.google.com/search?q=Yasaka+Pagoda" target="_blank" rel="noopener noreferrer">Yasaka Pagoda</a><span class="descriptor">(five-story pagoda landmark in Higashiyama)</span> area — historic stone lanes, old shops, postcard <a class="place-link" href="https://www.google.com/search?q=Kyoto" target="_blank" rel="noopener noreferrer">Kyoto</a><span class="descriptor">(former imperial capital famous for temples and old lanes)</span> streets.</div>
+          </li>
+          <li class="timeline-item">
+            <time>11:30–13:00</time>
+            <div class="activity-text">Lunch in the <a class="place-link" href="https://www.google.com/search?q=Higashiyama" target="_blank" rel="noopener noreferrer">Higashiyama</a><span class="descriptor">(Kyoto’s historic eastern temple district)</span> old-town area.</div>
+          </li>
+          <li class="timeline-item">
+            <time>13:00–15:30</time>
+            <div class="activity-text"><a class="place-link" href="https://www.google.com/search?q=Yasaka+Shrine" target="_blank" rel="noopener noreferrer">Yasaka Shrine</a><span class="descriptor">(Gion shrine famous for festivals and lanterns)</span>, <a class="place-link" href="https://www.google.com/search?q=Maruyama+Park" target="_blank" rel="noopener noreferrer">Maruyama Park</a><span class="descriptor">(classic park beside Yasaka Shrine)</span>, and either <a class="place-link" href="https://www.google.com/search?q=Kennin-ji" target="_blank" rel="noopener noreferrer">Kennin-ji</a><span class="descriptor">(Kyoto’s oldest Zen temple)</span> or <a class="place-link" href="https://www.google.com/search?q=Kodai-ji" target="_blank" rel="noopener noreferrer">Kodai-ji</a><span class="descriptor">(Zen temple known for gardens and night illuminations)</span> — beautiful Zen temples.</div>
+          </li>
+          <li class="timeline-item">
+            <time>16:00–17:30</time>
+            <div class="activity-text"><a class="place-link" href="https://www.google.com/search?q=Nishiki+Market" target="_blank" rel="noopener noreferrer">Nishiki Market</a><span class="descriptor">(Kyoto’s covered food market)</span> / <a class="place-link" href="https://www.google.com/search?q=Teramachi" target="_blank" rel="noopener noreferrer">Teramachi</a><span class="descriptor">(covered shopping arcades and temple streets)</span> — food market and covered shopping streets.</div>
+          </li>
+          <li class="timeline-item">
+            <time>18:30–21:00</time>
+            <div class="activity-text">Dinner in <a class="place-link" href="https://www.google.com/search?q=Gion" target="_blank" rel="noopener noreferrer">Gion</a><span class="descriptor">(Kyoto’s geisha district and atmospheric old lanes)</span>, <a class="place-link" href="https://www.google.com/search?q=Pontocho" target="_blank" rel="noopener noreferrer">Pontocho</a><span class="descriptor">(narrow riverside dining alley)</span>, or <a class="place-link" href="https://www.google.com/search?q=Kawaramachi" target="_blank" rel="noopener noreferrer">Kawaramachi</a><span class="descriptor">(central shopping and dining district)</span>.</div>
+          </li>
+        </ol>
+      </article>
+      <article class="day-card" id="day-10">
+        <div class="day-card__topline">
+          <div>
+            <p class="eyebrow">Day 10</p>
+            <h2>Mon 2 Nov</h2>
+          </div>
+          <div class="sleep-badge"><span>Sleep base</span><a class="place-link" href="https://www.google.com/search?q=Kyoto" target="_blank" rel="noopener noreferrer">Kyoto</a><span class="descriptor">(former imperial capital famous for temples and old lanes)</span></div>
+        </div>
+        <ol class="timeline">
+          
+          <li class="timeline-item">
+            <time>07:00–08:30</time>
+            <div class="activity-text"><a class="place-link" href="https://www.google.com/search?q=Arashiyama+Bamboo+Grove" target="_blank" rel="noopener noreferrer">Arashiyama Bamboo Grove</a><span class="descriptor">(iconic bamboo path in western Kyoto)</span> — famous bamboo forest; go early.</div>
+          </li>
+          <li class="timeline-item">
+            <time>08:30–11:00</time>
+            <div class="activity-text"><a class="place-link" href="https://www.google.com/search?q=Tenryu-ji" target="_blank" rel="noopener noreferrer">Tenryu-ji</a><span class="descriptor">(major Zen temple with a famous garden)</span> — major Zen temple and garden — plus <a class="place-link" href="https://www.google.com/search?q=Okochi+Sanso" target="_blank" rel="noopener noreferrer">Okochi Sanso</a><span class="descriptor">(former actor’s villa and hilltop garden)</span> — quiet villa/garden with views.</div>
+          </li>
+          <li class="timeline-item">
+            <time>11:30–13:00</time>
+            <div class="activity-text">Lunch in <a class="place-link" href="https://www.google.com/search?q=Arashiyama" target="_blank" rel="noopener noreferrer">Arashiyama</a><span class="descriptor">(scenic western Kyoto district by river and mountains)</span>.</div>
+          </li>
+          <li class="timeline-item">
+            <time>13:30–15:00</time>
+            <div class="activity-text"><a class="place-link" href="https://www.google.com/search?q=Kinkaku-ji" target="_blank" rel="noopener noreferrer">Kinkaku-ji</a><span class="descriptor">(Golden Pavilion temple covered in gold leaf)</span> — the Golden Pavilion.</div>
+          </li>
+          <li class="timeline-item">
+            <time>15:30–17:00</time>
+            <div class="activity-text"><a class="place-link" href="https://www.google.com/search?q=Daitoku-ji" target="_blank" rel="noopener noreferrer">Daitoku-ji</a><span class="descriptor">(large Zen temple complex with subtemple gardens)</span> — less-crowded Zen temple complex — or a relaxed café/shop break.</div>
+          </li>
+          <li class="timeline-item">
+            <time>18:30–21:00</time>
+            <div class="activity-text"><a class="place-link" href="https://www.google.com/search?q=Kyoto" target="_blank" rel="noopener noreferrer">Kyoto</a><span class="descriptor">(former imperial capital famous for temples and old lanes)</span> dinner.</div>
+          </li>
+        </ol>
+      </article>
+      <article class="day-card" id="day-11">
+        <div class="day-card__topline">
+          <div>
+            <p class="eyebrow">Day 11</p>
+            <h2>Tue 3 Nov — Culture Day</h2>
+          </div>
+          <div class="sleep-badge"><span>Sleep base</span><a class="place-link" href="https://www.google.com/search?q=Kyoto" target="_blank" rel="noopener noreferrer">Kyoto</a><span class="descriptor">(former imperial capital famous for temples and old lanes)</span></div>
+        </div>
+        <ol class="timeline">
+          
+          <li class="timeline-item">
+            <time>07:00–09:00</time>
+            <div class="activity-text"><a class="place-link" href="https://www.google.com/search?q=Fushimi+Inari" target="_blank" rel="noopener noreferrer">Fushimi Inari</a><span class="descriptor">(shrine famous for thousands of red torii gates)</span> — famous shrine with thousands of red <a class="place-link" href="https://www.google.com/search?q=torii" target="_blank" rel="noopener noreferrer">torii</a><span class="descriptor">(traditional Shinto shrine gate)</span> gates. Go early because it is a national holiday.</div>
+          </li>
+          <li class="timeline-item">
+            <time>09:30–10:30</time>
+            <div class="activity-text"><a class="place-link" href="https://www.google.com/search?q=Kyoto" target="_blank" rel="noopener noreferrer">Kyoto</a><span class="descriptor">(former imperial capital famous for temples and old lanes)</span> → <a class="place-link" href="https://www.google.com/search?q=Nara" target="_blank" rel="noopener noreferrer">Nara</a><span class="descriptor">(ancient capital known for deer, shrines, and giant temples)</span>.</div>
+          </li>
+          <li class="timeline-item">
+            <time>10:30–12:30</time>
+            <div class="activity-text"><a class="place-link" href="https://www.google.com/search?q=Nara+Park" target="_blank" rel="noopener noreferrer">Nara Park</a><span class="descriptor">(deer park surrounding major temples and shrines)</span> + <a class="place-link" href="https://www.google.com/search?q=Todai-ji" target="_blank" rel="noopener noreferrer">Todai-ji</a><span class="descriptor">(giant Buddha temple and Nara landmark)</span> — friendly deer park plus the giant Buddha temple; <a class="place-link" href="https://www.google.com/search?q=Todai-ji" target="_blank" rel="noopener noreferrer">Todai-ji</a><span class="descriptor">(giant Buddha temple and Nara landmark)</span>’s official <a class="place-link" href="https://www.google.com/search?q=Nara" target="_blank" rel="noopener noreferrer">Nara</a><span class="descriptor">(ancient capital known for deer, shrines, and giant temples)</span> tourism listing shows November–March hours as 8:00–17:00. (<a class="official-link" href="https://www.visitnara.jp/venues/A00485/?utm_source=chatgpt.com" target="_blank" rel="noopener noreferrer">Visit Nara</a>)</div>
+          </li>
+          <li class="timeline-item">
+            <time>12:30–13:30</time>
+            <div class="activity-text">Lunch near <a class="place-link" href="https://www.google.com/search?q=Nara+Park" target="_blank" rel="noopener noreferrer">Nara Park</a><span class="descriptor">(deer park surrounding major temples and shrines)</span> or <a class="place-link" href="https://www.google.com/search?q=Higashimuki+Shopping+Street" target="_blank" rel="noopener noreferrer">Higashimuki Shopping Street</a><span class="descriptor">(covered food and shopping street near Nara Station)</span> — covered shopping/food street.</div>
+          </li>
+          <li class="timeline-item">
+            <time>13:30–15:30</time>
+            <div class="activity-text">Choose one: <a class="place-link" href="https://www.google.com/search?q=Kasuga+Taisha" target="_blank" rel="noopener noreferrer">Kasuga Taisha</a><span class="descriptor">(lantern-filled forest Shinto shrine)</span> — lantern-filled forest shrine; <a class="place-link" href="https://www.google.com/search?q=Isuien+Garden" target="_blank" rel="noopener noreferrer">Isuien Garden</a><span class="descriptor">(traditional garden using borrowed scenery)</span> — traditional garden; or <a class="place-link" href="https://www.google.com/search?q=Naramachi" target="_blank" rel="noopener noreferrer">Naramachi</a><span class="descriptor">(old merchant-house neighborhood)</span> — old merchant-house neighborhood.</div>
+          </li>
+          <li class="timeline-item">
+            <time>15:30–16:30</time>
+            <div class="activity-text"><a class="place-link" href="https://www.google.com/search?q=Nara" target="_blank" rel="noopener noreferrer">Nara</a><span class="descriptor">(ancient capital known for deer, shrines, and giant temples)</span> → <a class="place-link" href="https://www.google.com/search?q=Kyoto" target="_blank" rel="noopener noreferrer">Kyoto</a><span class="descriptor">(former imperial capital famous for temples and old lanes)</span>.</div>
+          </li>
+          <li class="timeline-item">
+            <time>17:00–18:00</time>
+            <div class="activity-text">Rest and pack.</div>
+          </li>
+          <li class="timeline-item">
+            <time>18:30–21:00</time>
+            <div class="activity-text">Final <a class="place-link" href="https://www.google.com/search?q=Kyoto" target="_blank" rel="noopener noreferrer">Kyoto</a><span class="descriptor">(former imperial capital famous for temples and old lanes)</span> dinner.</div>
+          </li>
+        </ol>
+      </article>
+      <article class="day-card" id="day-12">
+        <div class="day-card__topline">
+          <div>
+            <p class="eyebrow">Day 12</p>
+            <h2>Wed 4 Nov</h2>
+          </div>
+          <div class="sleep-badge"><span>Sleep base</span><a class="place-link" href="https://www.google.com/search?q=Hiroshima" target="_blank" rel="noopener noreferrer">Hiroshima</a><span class="descriptor">(peace memorial city with excellent food culture)</span></div>
+        </div>
+        <ol class="timeline">
+          
+          <li class="timeline-item">
+            <time>08:00–09:00</time>
+            <div class="activity-text"><a class="place-link" href="https://www.google.com/search?q=Kyoto" target="_blank" rel="noopener noreferrer">Kyoto</a><span class="descriptor">(former imperial capital famous for temples and old lanes)</span> → <a class="place-link" href="https://www.google.com/search?q=Himeji" target="_blank" rel="noopener noreferrer">Himeji</a><span class="descriptor">(castle city west of Kobe)</span>.</div>
+          </li>
+          <li class="timeline-item">
+            <time>09:15–11:45</time>
+            <div class="activity-text"><a class="place-link" href="https://www.google.com/search?q=Himeji+Castle" target="_blank" rel="noopener noreferrer">Himeji Castle</a><span class="descriptor">(UNESCO-listed original white castle)</span> — Japan’s most famous original white castle.</div>
+          </li>
+          <li class="timeline-item">
+            <time>12:00–13:00</time>
+            <div class="activity-text">Lunch near <a class="place-link" href="https://www.google.com/search?q=Himeji" target="_blank" rel="noopener noreferrer">Himeji</a><span class="descriptor">(castle city west of Kobe)</span> Station.</div>
+          </li>
+          <li class="timeline-item">
+            <time>13:00–14:30</time>
+            <div class="activity-text"><a class="place-link" href="https://www.google.com/search?q=Himeji" target="_blank" rel="noopener noreferrer">Himeji</a><span class="descriptor">(castle city west of Kobe)</span> → <a class="place-link" href="https://www.google.com/search?q=Hiroshima" target="_blank" rel="noopener noreferrer">Hiroshima</a><span class="descriptor">(peace memorial city with excellent food culture)</span>.</div>
+          </li>
+          <li class="timeline-item">
+            <time>14:30–15:15</time>
+            <div class="activity-text">Drop bags / check in.</div>
+          </li>
+          <li class="timeline-item">
+            <time>15:30–17:30</time>
+            <div class="activity-text">Light <a class="place-link" href="https://www.google.com/search?q=Hiroshima" target="_blank" rel="noopener noreferrer">Hiroshima</a><span class="descriptor">(peace memorial city with excellent food culture)</span> orientation: <a class="place-link" href="https://www.google.com/search?q=Peace+Park" target="_blank" rel="noopener noreferrer">Peace Park</a><span class="descriptor">(memorial park for the atomic bombing)</span> exterior, <a class="place-link" href="https://www.google.com/search?q=Atomic+Bomb+Dome" target="_blank" rel="noopener noreferrer">Atomic Bomb Dome</a><span class="descriptor">(preserved ruin and UNESCO peace symbol)</span> exterior, riverside walk. Save the museum for tomorrow morning.</div>
+          </li>
+          <li class="timeline-item">
+            <time>18:30–20:30</time>
+            <div class="activity-text"><a class="place-link" href="https://www.google.com/search?q=Hiroshima" target="_blank" rel="noopener noreferrer">Hiroshima</a><span class="descriptor">(peace memorial city with excellent food culture)</span>-style <a class="place-link" href="https://www.google.com/search?q=okonomiyaki" target="_blank" rel="noopener noreferrer">okonomiyaki</a><span class="descriptor">(savory Osaka/Hiroshima-style pancake dish)</span> dinner.</div>
+          </li>
+        </ol>
+      </article>
+      <article class="day-card" id="day-13">
+        <div class="day-card__topline">
+          <div>
+            <p class="eyebrow">Day 13</p>
+            <h2>Thu 5 Nov</h2>
+          </div>
+          <div class="sleep-badge"><span>Sleep base</span><a class="place-link" href="https://www.google.com/search?q=Osaka" target="_blank" rel="noopener noreferrer">Osaka</a><span class="descriptor">(food-loving city known for nightlife and street energy)</span></div>
+        </div>
+        <ol class="timeline">
+          
+          <li class="timeline-item">
+            <time>08:30–10:30</time>
+            <div class="activity-text"><a class="place-link" href="https://www.google.com/search?q=Hiroshima+Peace+Memorial+Museum" target="_blank" rel="noopener noreferrer">Hiroshima Peace Memorial Museum</a><span class="descriptor">(museum documenting the atomic bombing)</span> + <a class="place-link" href="https://www.google.com/search?q=Peace+Park" target="_blank" rel="noopener noreferrer">Peace Park</a><span class="descriptor">(memorial park for the atomic bombing)</span> — major historical visit; best done with fresh morning energy.</div>
+          </li>
+          <li class="timeline-item">
+            <time>10:45–12:00</time>
+            <div class="activity-text"><a class="place-link" href="https://www.google.com/search?q=Hiroshima" target="_blank" rel="noopener noreferrer">Hiroshima</a><span class="descriptor">(peace memorial city with excellent food culture)</span> → <a class="place-link" href="https://www.google.com/search?q=Miyajimaguchi" target="_blank" rel="noopener noreferrer">Miyajimaguchi</a><span class="descriptor">(ferry gateway for Miyajima island)</span> → ferry to <a class="place-link" href="https://www.google.com/search?q=Miyajima" target="_blank" rel="noopener noreferrer">Miyajima</a><span class="descriptor">(scenic shrine island near Hiroshima)</span>. The <a class="place-link" href="https://www.google.com/search?q=JR+Miyajima+Ferry" target="_blank" rel="noopener noreferrer">JR Miyajima Ferry</a><span class="descriptor">(short ferry service to Miyajima island)</span> lists the crossing as about 10 minutes. (<a class="official-link" href="https://jr-miyajimaferry.co.jp/en/timetable/?utm_source=chatgpt.com" target="_blank" rel="noopener noreferrer">JR Miyajima Ferry</a>)</div>
+          </li>
+          <li class="timeline-item">
+            <time>12:00–15:00</time>
+            <div class="activity-text"><a class="place-link" href="https://www.google.com/search?q=Miyajima" target="_blank" rel="noopener noreferrer">Miyajima</a><span class="descriptor">(scenic shrine island near Hiroshima)</span> / <a class="place-link" href="https://www.google.com/search?q=Itsukushima+Shrine" target="_blank" rel="noopener noreferrer">Itsukushima Shrine</a><span class="descriptor">(sea-facing shrine with the famous floating torii)</span> — island shrine with the famous “floating” <a class="place-link" href="https://www.google.com/search?q=torii" target="_blank" rel="noopener noreferrer">torii</a><span class="descriptor">(traditional Shinto shrine gate)</span> gate. Town walk, snacks, optional short ropeway/light hike if weather and energy are good.</div>
+          </li>
+          <li class="timeline-item">
+            <time>15:00–16:00</time>
+            <div class="activity-text">Return to <a class="place-link" href="https://www.google.com/search?q=Hiroshima" target="_blank" rel="noopener noreferrer">Hiroshima</a><span class="descriptor">(peace memorial city with excellent food culture)</span>, collect bags.</div>
+          </li>
+          <li class="timeline-item">
+            <time>16:15–18:00</time>
+            <div class="activity-text"><a class="place-link" href="https://www.google.com/search?q=Hiroshima" target="_blank" rel="noopener noreferrer">Hiroshima</a><span class="descriptor">(peace memorial city with excellent food culture)</span> → <a class="place-link" href="https://www.google.com/search?q=Shin-Osaka" target="_blank" rel="noopener noreferrer">Shin-Osaka</a><span class="descriptor">(Osaka’s main bullet-train station)</span> / <a class="place-link" href="https://www.google.com/search?q=Osaka" target="_blank" rel="noopener noreferrer">Osaka</a><span class="descriptor">(food-loving city known for nightlife and street energy)</span>.</div>
+          </li>
+          <li class="timeline-item">
+            <time>18:15–19:00</time>
+            <div class="activity-text">Check in <a class="place-link" href="https://www.google.com/search?q=Osaka" target="_blank" rel="noopener noreferrer">Osaka</a><span class="descriptor">(food-loving city known for nightlife and street energy)</span>.</div>
+          </li>
+          <li class="timeline-item">
+            <time>19:30–21:30</time>
+            <div class="activity-text">Easy <a class="place-link" href="https://www.google.com/search?q=Osaka" target="_blank" rel="noopener noreferrer">Osaka</a><span class="descriptor">(food-loving city known for nightlife and street energy)</span> dinner: <a class="place-link" href="https://www.google.com/search?q=Dotonbori" target="_blank" rel="noopener noreferrer">Dotonbori</a><span class="descriptor">(neon canal food district)</span> — neon food district; <a class="place-link" href="https://www.google.com/search?q=Hozenji+Yokocho" target="_blank" rel="noopener noreferrer">Hozenji Yokocho</a><span class="descriptor">(narrow stone-paved dining alley)</span> — narrow atmospheric food alley; <a class="place-link" href="https://www.google.com/search?q=Namba" target="_blank" rel="noopener noreferrer">Namba</a><span class="descriptor">(southern Osaka shopping and dining hub)</span> or <a class="place-link" href="https://www.google.com/search?q=Ura-Namba" target="_blank" rel="noopener noreferrer">Ura-Namba</a><span class="descriptor">(busy local food alleys behind Namba)</span> — busy local dining areas.</div>
+          </li>
+        </ol>
+      </article>
+      <article class="day-card" id="day-14">
+        <div class="day-card__topline">
+          <div>
+            <p class="eyebrow">Day 14</p>
+            <h2>Fri 6 Nov</h2>
+          </div>
+          <div class="sleep-badge"><span>Sleep base</span><a class="place-link" href="https://www.google.com/search?q=Osaka" target="_blank" rel="noopener noreferrer">Osaka</a><span class="descriptor">(food-loving city known for nightlife and street energy)</span></div>
+        </div>
+        <ol class="timeline">
+          
+          <li class="timeline-item">
+            <time>09:00–10:30</time>
+            <div class="activity-text"><a class="place-link" href="https://www.google.com/search?q=Osaka+Castle+Park" target="_blank" rel="noopener noreferrer">Osaka Castle Park</a><span class="descriptor">(large city park around Osaka Castle)</span> — iconic castle grounds and city-park walk. Go inside the museum only if you both feel like it.</div>
+          </li>
+          <li class="timeline-item">
+            <time>10:30–11:15</time>
+            <div class="activity-text">Coffee / transit toward the <a class="place-link" href="https://www.google.com/search?q=Horie" target="_blank" rel="noopener noreferrer">Horie</a><span class="descriptor">(design, café, and boutique neighborhood)</span>–<a class="place-link" href="https://www.google.com/search?q=Shinsaibashi" target="_blank" rel="noopener noreferrer">Shinsaibashi</a><span class="descriptor">(major central shopping district)</span> shopping area.</div>
+          </li>
+          <li class="timeline-item">
+            <time>11:30–12:20</time>
+            <div class="activity-text"><a class="place-link" href="https://www.google.com/search?q=UES+Osaka" target="_blank" rel="noopener noreferrer">UES Osaka</a><span class="descriptor">(Japanese denim and workwear store)</span> — Japanese denim/workwear store in <a class="place-link" href="https://www.google.com/search?q=Kitahorie" target="_blank" rel="noopener noreferrer">Kitahorie</a><span class="descriptor">(boutique-heavy area within Horie)</span>. Keep this focused.</div>
+          </li>
+          <li class="timeline-item">
+            <time>12:30–13:20</time>
+            <div class="activity-text"><a class="place-link" href="https://www.google.com/search?q=ZABOU+Osaka" target="_blank" rel="noopener noreferrer">ZABOU Osaka</a><span class="descriptor">(menswear shop known for Japanese denim/workwear)</span> — menswear shop and efficient RESOLUTE stop in <a class="place-link" href="https://www.google.com/search?q=Minamisenba" target="_blank" rel="noopener noreferrer">Minamisenba</a><span class="descriptor">(central fashion and café area)</span>.</div>
+          </li>
+          <li class="timeline-item">
+            <time>13:20–14:30</time>
+            <div class="activity-text">Lunch around <a class="place-link" href="https://www.google.com/search?q=Horie" target="_blank" rel="noopener noreferrer">Horie</a><span class="descriptor">(design, café, and boutique neighborhood)</span> / <a class="place-link" href="https://www.google.com/search?q=Shinsaibashi" target="_blank" rel="noopener noreferrer">Shinsaibashi</a><span class="descriptor">(major central shopping district)</span> / <a class="place-link" href="https://www.google.com/search?q=Minamisenba" target="_blank" rel="noopener noreferrer">Minamisenba</a><span class="descriptor">(central fashion and café area)</span> — central shopping and café neighborhoods near the stores.</div>
+          </li>
+          <li class="timeline-item">
+            <time>14:30–16:30</time>
+            <div class="activity-text"><a class="place-link" href="https://www.google.com/search?q=Horie" target="_blank" rel="noopener noreferrer">Horie</a><span class="descriptor">(design, café, and boutique neighborhood)</span> / <a class="place-link" href="https://www.google.com/search?q=Orange+Street" target="_blank" rel="noopener noreferrer">Orange Street</a><span class="descriptor">(design and furniture shopping street)</span> / <a class="place-link" href="https://www.google.com/search?q=Amerikamura" target="_blank" rel="noopener noreferrer">Amerikamura</a><span class="descriptor">(youth fashion and streetwear neighborhood)</span> — design shops, cafés, street style, vintage, and general <a class="place-link" href="https://www.google.com/search?q=Osaka" target="_blank" rel="noopener noreferrer">Osaka</a><span class="descriptor">(food-loving city known for nightlife and street energy)</span> wandering.</div>
+          </li>
+          <li class="timeline-item">
+            <time>16:30–18:00</time>
+            <div class="activity-text">Hotel rest / drop purchases.</div>
+          </li>
+          <li class="timeline-item">
+            <time>18:00–22:00</time>
+            <div class="activity-text">Final <a class="place-link" href="https://www.google.com/search?q=Osaka" target="_blank" rel="noopener noreferrer">Osaka</a><span class="descriptor">(food-loving city known for nightlife and street energy)</span> food night: <a class="place-link" href="https://www.google.com/search?q=Dotonbori" target="_blank" rel="noopener noreferrer">Dotonbori</a><span class="descriptor">(neon canal food district)</span>, <a class="place-link" href="https://www.google.com/search?q=Hozenji+Yokocho" target="_blank" rel="noopener noreferrer">Hozenji Yokocho</a><span class="descriptor">(narrow stone-paved dining alley)</span>, <a class="place-link" href="https://www.google.com/search?q=Shinsekai" target="_blank" rel="noopener noreferrer">Shinsekai</a><span class="descriptor">(retro nightlife and kushikatsu area)</span> — retro food/nightlife area — or <a class="place-link" href="https://www.google.com/search?q=Ura-Namba" target="_blank" rel="noopener noreferrer">Ura-Namba</a><span class="descriptor">(busy local food alleys behind Namba)</span>.</div>
+          </li>
+        </ol>
+      </article>
+      <article class="day-card" id="day-15">
+        <div class="day-card__topline">
+          <div>
+            <p class="eyebrow">Day 15</p>
+            <h2>Sat 7 Nov</h2>
+          </div>
+          <div class="sleep-badge"><span>Departing</span>Depart</div>
+        </div>
+        <ol class="timeline">
+          
+          <li class="timeline-item">
+            <time>Morning</time>
+            <div class="activity-text">Check out. If flight is late, do <a class="place-link" href="https://www.google.com/search?q=Kuromon+Market" target="_blank" rel="noopener noreferrer">Kuromon Market</a><span class="descriptor">(Osaka food market)</span> — food market; <a class="place-link" href="https://www.google.com/search?q=Namba" target="_blank" rel="noopener noreferrer">Namba</a><span class="descriptor">(southern Osaka shopping and dining hub)</span> — shopping/food; or a short <a class="place-link" href="https://www.google.com/search?q=Osaka+Castle" target="_blank" rel="noopener noreferrer">Osaka Castle</a><span class="descriptor">(iconic reconstructed castle and museum)</span> walk if it was skipped Friday.</div>
+          </li>
+          <li class="timeline-item">
+            <time>Flight time</time>
+            <div class="activity-text">Depart from <a class="place-link" href="https://www.google.com/search?q=Kansai+International+Airport" target="_blank" rel="noopener noreferrer">Kansai International Airport</a><span class="descriptor">(Osaka Bay’s main international airport)</span>.</div>
+          </li>
+        </ol>
+      </article>
+    </section>
+  </main>
+</body>
+</html>
