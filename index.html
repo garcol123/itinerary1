@@ -387,10 +387,11 @@
     }
 
     .place-note-trigger {
-      display: inline-flex;
-      align-items: baseline;
-      gap: 0.22em;
-      white-space: nowrap;
+      display: inline;
+    }
+
+    .place-note-trigger .place-link {
+      overflow-wrap: anywhere;
     }
 
     .info-button {
@@ -398,6 +399,7 @@
       place-items: center;
       width: 1.15em;
       height: 1.15em;
+      margin-left: 0.22em;
       padding: 0;
       border: 0;
       background: transparent;
@@ -405,7 +407,7 @@
       font-size: 0.9em;
       line-height: 1;
       cursor: pointer;
-      flex: 0 0 auto;
+      vertical-align: -0.08em;
     }
 
     .info-button .fa-circle-info { display: block; }
@@ -438,6 +440,49 @@
       text-align: center;
       font-size: 0.88rem;
       border-top: 1px solid var(--line-soft);
+    }
+
+
+    @media (max-width: 640px) {
+      .page {
+        width: calc(100% - 24px);
+      }
+
+      .stats {
+        grid-template-columns: 1fr;
+      }
+
+      .day-card__topline {
+        flex-direction: column;
+        gap: 12px;
+        padding: 18px 16px;
+      }
+
+      .sleep-badge {
+        flex: 1 1 auto;
+        width: 100%;
+        padding-left: 0;
+        border-left: 0;
+        text-align: left;
+      }
+
+      .timeline {
+        padding: 4px 16px 14px;
+      }
+
+      .timeline-item {
+        grid-template-columns: 1fr;
+        gap: 6px;
+      }
+
+      .timeline-item time {
+        white-space: normal;
+      }
+
+      .activity-text,
+      .sleep-badge {
+        overflow-wrap: anywhere;
+      }
     }
 
     @media print {
