@@ -5,6 +5,7 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <title>2026 Japan Itinerary</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet"/>
 <style>
     :root {
       --ink: #050505;
@@ -364,6 +365,60 @@
       color: var(--muted);
       font-size: 0.93em;
       font-weight: 430;
+    }
+
+    .activity-text .descriptor,
+    .sleep-badge .descriptor {
+      display: none;
+    }
+
+    .activity-text .descriptor.is-open,
+    .sleep-badge .descriptor.is-open {
+      display: inline-block;
+      margin: 0.12em 0.15em 0.12em 0.35em;
+      padding: 0.16em 0.6em;
+      border: 1px solid var(--line-soft);
+      border-radius: 999px;
+      background: #f7f7f7;
+      color: var(--muted);
+      font-size: 0.78em;
+      line-height: 1.35;
+      vertical-align: baseline;
+    }
+
+    .place-note-trigger {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 0.22em;
+      white-space: nowrap;
+    }
+
+    .info-button {
+      display: inline-grid;
+      place-items: center;
+      width: 1.15em;
+      height: 1.15em;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: 0.9em;
+      line-height: 1;
+      cursor: pointer;
+      flex: 0 0 auto;
+    }
+
+    .info-button .fa-circle-info { display: block; }
+
+    .info-button:hover,
+    .info-button:focus-visible {
+      color: var(--ink);
+    }
+
+    .info-button:focus-visible {
+      outline: 2px solid var(--ink);
+      outline-offset: 2px;
     }
 
     .official-link {
@@ -755,7 +810,7 @@
 </li>
 <li class="timeline-item">
 <time>13:30–16:15</time>
-<div class="activity-text"><a class="place-link" href="https://www.google.com/search?q=Nara+Park" rel="noopener noreferrer" target="_blank">Nara Park</a><span class="descriptor">(deer park surrounding major temples and shrines)</span> + <a class="place-link" href="https://www.google.com/search?q=Todai-ji" rel="noopener noreferrer" target="_blank">Todai-ji</a><span class="descriptor">(giant Buddha temple and Nara landmark)</span>; <a class="place-link" href="https://www.google.com/search?q=Todai-ji" rel="noopener noreferrer" target="_blank">Todai-ji</a><span class="descriptor">(giant Buddha temple and Nara landmark)</span>’s official <a class="place-link" href="https://www.google.com/search?q=Nara" rel="noopener noreferrer" target="_blank">Nara</a><span class="descriptor">(ancient capital known for deer, shrines, and giant temples)</span> tourism listing shows November–March hours as 8:00–17:00. (<a class="official-link" href="https://www.visitnara.jp/venues/A00485/?utm_source=chatgpt.com" rel="noopener noreferrer" target="_blank">Visit Nara</a>)</div>
+<div class="activity-text"><a class="place-link" href="https://www.google.com/search?q=Nara+Park" rel="noopener noreferrer" target="_blank">Nara Park</a><span class="descriptor">(deer park surrounding major temples and shrines)</span> + <a class="place-link" href="https://www.google.com/search?q=Todai-ji" rel="noopener noreferrer" target="_blank">Todai-ji</a><span class="descriptor">(giant Buddha temple and Nara landmark)</span>.</div>
 </li>
 <li class="timeline-item">
 <time>16:15–17:15</time>
@@ -825,7 +880,7 @@
 </li>
 <li class="timeline-item">
 <time>10:45–12:00</time>
-<div class="activity-text"><a class="place-link" href="https://www.google.com/search?q=Hiroshima" rel="noopener noreferrer" target="_blank">Hiroshima</a><span class="descriptor">(peace memorial city with excellent food culture)</span> → <a class="place-link" href="https://www.google.com/search?q=Miyajimaguchi" rel="noopener noreferrer" target="_blank">Miyajimaguchi</a><span class="descriptor">(ferry gateway for Miyajima island)</span> → ferry to <a class="place-link" href="https://www.google.com/search?q=Miyajima" rel="noopener noreferrer" target="_blank">Miyajima</a><span class="descriptor">(scenic shrine island near Hiroshima)</span>. The <a class="place-link" href="https://www.google.com/search?q=JR+Miyajima+Ferry" rel="noopener noreferrer" target="_blank">JR Miyajima Ferry</a><span class="descriptor">(short ferry service to Miyajima island)</span> lists the crossing as about 10 minutes. (<a class="official-link" href="https://jr-miyajimaferry.co.jp/en/timetable/?utm_source=chatgpt.com" rel="noopener noreferrer" target="_blank">JR Miyajima Ferry</a>)</div>
+<div class="activity-text"><a class="place-link" href="https://www.google.com/search?q=Hiroshima" rel="noopener noreferrer" target="_blank">Hiroshima</a><span class="descriptor">(peace memorial city with excellent food culture)</span> → <a class="place-link" href="https://www.google.com/search?q=Miyajimaguchi" rel="noopener noreferrer" target="_blank">Miyajimaguchi</a><span class="descriptor">(ferry gateway for Miyajima island)</span> → ferry to <a class="place-link" href="https://www.google.com/search?q=Miyajima" rel="noopener noreferrer" target="_blank">Miyajima</a><span class="descriptor">(scenic shrine island near Hiroshima)</span>. The <a class="place-link" href="https://www.google.com/search?q=JR+Miyajima+Ferry" rel="noopener noreferrer" target="_blank">JR Miyajima Ferry</a><span class="descriptor">(short ferry service to Miyajima island)</span> lists the crossing as about 10 minutes.</div>
 </li>
 <li class="timeline-item">
 <time>12:00–15:00</time>
@@ -913,5 +968,26 @@
 </article>
 </section>
 </main>
+<script>
+  document.querySelectorAll('.activity-text .place-link + .descriptor, .sleep-badge .place-link + .descriptor').forEach((note) => {
+    const link = note.previousElementSibling;
+    const group = document.createElement('span');
+    const button = document.createElement('button');
+    const label = link.textContent.trim();
+    group.className = 'place-note-trigger';
+    button.className = 'info-button';
+    button.type = 'button';
+    button.innerHTML = '<i class="fa-solid fa-circle-info" aria-hidden="true"></i>';
+    button.setAttribute('aria-label', `About ${label}`);
+    button.setAttribute('aria-expanded', 'false');
+    note.textContent = note.textContent.trim().replace(/^\((.*)\)$/, '$1');
+    link.insertAdjacentElement('beforebegin', group);
+    group.append(link, button);
+    button.addEventListener('click', () => {
+      const isOpen = note.classList.toggle('is-open');
+      button.setAttribute('aria-expanded', String(isOpen));
+    });
+  });
+</script>
 </body>
 </html>
